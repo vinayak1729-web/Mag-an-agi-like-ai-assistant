@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chikitsa Voice Assistant</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #84e0ff 0%, #f59eff 100%);
+        color: #333;
+        padding: 0;
+        margin: 0;
+    }
+
+    nav {
+        background-color: #ffffff;
+    }
+
+    .navbar-brand img {
+        height: 55px;
+    }
+
+    header {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    header h1 {
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        color: #666;
+        font-size: 14px;
+        font-weight: 300;
+        margin-top: 5px;
+    }
+
+    #video-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+        border-radius: 50%;
+        overflow: hidden;
+        /* Makes the video truly circular */
+        width: 300px;
+        height: 300px;
+        border: 5px solid #fff;
+        margin-left: auto;
+        margin-right: auto;
+
+    }
+
+    #video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* Ensures the video covers the circle */
+    }
+
+    #chatbox {
+        border-radius: 8px;
+        max-height: 400px;
+        overflow-y: auto;
+        margin-top: 20px;
+        padding: 10px;
+        background: transparent;
+    }
+
+    .message {
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 8px;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .user-msg {
+        background-color: #c6f3ff;
+        text-align: right;
+        animation: slideInUser 0.5s ease-in-out;
+    }
+
+    .bot-msg {
+        background-color: #e4c2ff;
+        text-align: left;
+        animation: slideInBot 0.5s ease-in-out;
+    }
+
+    #controls {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    #mic-btn {
+        background-color: #2d9cd4;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 18px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s;
+    }
+
+    #mic-btn:hover {
+        background-color: #1a7fb8;
+    }
+
+    .mic-icon {
+        margin-right: 10px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #ffffff;
+        margin-top: 30px;
+    }
+
+    footer img {
+        height: 30px;
+    }
+
+    footer span {
+        font-size: 14px;
+        color: #777;
+        margin-left: 10px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideInUser {
+        from {
+            transform: translateX(30px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideInBot {
+        from {
+            transform: translateX(-30px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .message {
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 8px;
+        animation: fadeIn 0.5s ease-in-out;
+        display: flex;
+        align-items: center;
+    }
+
+    .user-msg {
+        background-color: #c6f3ff;
+        text-align: right;
+        animation: slideInUser 0.5s ease-in-out;
+    }
+
+    .user-msg .message-content {
+        margin-right: 10px;
+    }
+
+    .user-msg .user-emoji {
+        font-size: 20px;
+        margin-left: 10px;
+    }
+
+    .user-msg:hover {
+        background-color: #b1e9ff;
+    }
+
+    .bot-msg {
+        background-color: #e4c2ff;
+        text-align: left;
+        animation: slideInBot 0.5s ease-in-out;
+    }
+
+    .bot-msg .message-content {
+        margin-left: 10px;
+    }
+
+    .bot-msg .bot-emoji {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    .bot-msg:hover {
+        background-color: #d9b0ff;
+    }
+
+    #mic-btn {
+        background-color: #2d9cd4;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 18px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s;
+    }
+
+    #mic-btn:hover {
+        background-color: #1a7fb8;
+    }
+
+    #mic-btn .mic-icon {
+        font-size: 24px;
+        margin-right: 10px;
+    }
+
+    #mic-btn.listening {
+        background-color: #1a7fb8;
+    }
+</style>
+
+<body>
+    
+    
+    <div class="container">
+        <header>
+            <h1>Mag Assistant 🤖</h1>
+            <p class="subtitle" style="font-size: 16px;">Your safe space to talk and feel heard 💖</p>
+            <br>
+            <p class="subtitle" style="font-size: 14px;">Your Face Cam is used for a better understanding of your behavior patterns 👁️</p>
+        </header>
+    </div>
+    <main>
+        </main>
+
+        <div id="video-container">
+            <img id="video" src="/video_feed" alt="Video Stream">
+            <div class="video-overlay"></div>
+        </div>
+        <div class="container">
+            <div id="chatbox">
+                <div class="message user-msg">
+                    <div class="message-content">Hello !!</div>
+                    <div class="user-emoji">👋</div>
+                </div>
+                <div class="message bot-msg">
+                    <div class="bot-emoji">🤖</div>
+                    <div class="message-content">Hi there! I'm Chikitsa, your digital mental health assistant. How can I
+                        help you today?</div>
+                </div>
+            </div>
+
+            <div id="controls">
+                <button id="mic-btn">
+                    <span class="mic-icon">🎤</span>
+                    <span class="mic-label">Tap to speak</span>
+                </button>
+            </div>
+    </main>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        video.src = "/video_feed";
+
+        document.getElementById('mic-btn').onclick = function () {
+            startListening();
+            this.classList.add('listening');
+        };
+
+        function sendMessage(userInput) {
+            if (userInput.trim() === "") return;
+            const chatbox = document.getElementById('chatbox');
+            chatbox.innerHTML += `<div class="message user-msg"><div class="message-content">${userInput}</div></div>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            fetch('/talk_to_me', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `user_input=${encodeURIComponent(userInput)}`
+            })
+                .then(response => response.json())
+                .then(data => {
+                    chatbox.innerHTML += `<div class="message bot-msg"><div class="message-content">${data.response}</div></div>`;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                    speak(data.response);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function startListening() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.start();
+
+            recognition.onresult = function (event) {
+                const userInput = event.results[0][0].transcript;
+                document.getElementById('mic-btn').classList.remove('listening');
+                sendMessage(userInput);
+            };
+
+            recognition.onerror = function (event) {
+                console.error('Speech recognition error:', event.error);
+                document.getElementById('mic-btn').classList.remove('listening');
+            };
+
+            recognition.onend = function () {
+                document.getElementById('mic-btn').classList.remove('listening');
+            };
+        }
+
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+
+</html>
