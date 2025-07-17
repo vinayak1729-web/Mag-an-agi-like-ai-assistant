@@ -1,2 +1,2 @@
-# Mag an agi like ai assistant
+# Mag an agi like ai assistant.
  
